@@ -11,11 +11,12 @@ Supported types to decode into:
     
     * int
     * float64
-    * strings
-    * structs made of those
-    * slices made of those
-    * pointers to all of those
+    * string
+    * bool
     * RawMessage
+    * structs made of all of these
+    * slices made of all of these
+    * pointers to all of these
 
 Other basic types would be easy to add; I have not needed them yet.
 
