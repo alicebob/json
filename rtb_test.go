@@ -157,28 +157,28 @@ type Native struct {
 	BAttr   []int  `json:"battr,omitempty"`
 }
 type Video struct {
-	Mimes          []string        `json:"mimes,omitempty"`
-	MinDuration    int             `json:"minduration,omitempty"`
-	MaxDuration    int             `json:"maxduration,omitempty"`
-	Protocol       int             `json:"protocol,omitempty"`
-	Protocols      []int           `json:"protocols,omitempty"`
-	W              int             `json:"w,omitempty"`
-	H              int             `json:"h,omitempty"`
-	StartDelay     int             `json:"startdelay,omitempty"`
-	Linearity      int             `json:"linearity,omitempty"`
-	Sequence       int             `json:"sequence,omitempty"`
-	BAttr          []int           `json:"battr,omitempty"`
-	MaxExtended    int             `json:"maxextended,omitempty"`
-	MinBitRate     int             `json:"minbitrate,omitempty"`
-	MaxBitRate     int             `json:"maxbitrate,omitempty"`
-	BoxingAllowed  int             `json:"boxingallowed,omitempty"`
-	PlaybackMethod []int           `json:"playbackmethod,omitempty"`
-	Delivery       []int           `json:"delivery,omitempty"`
-	Pos            int             `json:"pos,omitempty"`
-	CompanionAd    []Banner        `json:"companionad,omitempty"`
-	Api            []int           `json:"api,omitempty"`
-	CompanionType  []int           `json:"companiontype,omitempty"`
-	Ext            json.RawMessage `json:"ext,omitempty"`
+	Mimes          []string   `json:"mimes,omitempty"`
+	MinDuration    int        `json:"minduration,omitempty"`
+	MaxDuration    int        `json:"maxduration,omitempty"`
+	Protocol       int        `json:"protocol,omitempty"`
+	Protocols      []int      `json:"protocols,omitempty"`
+	W              int        `json:"w,omitempty"`
+	H              int        `json:"h,omitempty"`
+	StartDelay     int        `json:"startdelay,omitempty"`
+	Linearity      int        `json:"linearity,omitempty"`
+	Sequence       int        `json:"sequence,omitempty"`
+	BAttr          []int      `json:"battr,omitempty"`
+	MaxExtended    int        `json:"maxextended,omitempty"`
+	MinBitRate     int        `json:"minbitrate,omitempty"`
+	MaxBitRate     int        `json:"maxbitrate,omitempty"`
+	BoxingAllowed  int        `json:"boxingallowed,omitempty"`
+	PlaybackMethod []int      `json:"playbackmethod,omitempty"`
+	Delivery       []int      `json:"delivery,omitempty"`
+	Pos            int        `json:"pos,omitempty"`
+	CompanionAd    []Banner   `json:"companionad,omitempty"`
+	Api            []int      `json:"api,omitempty"`
+	CompanionType  []int      `json:"companiontype,omitempty"`
+	Ext            RawMessage `json:"ext,omitempty"`
 }
 type Pmp struct {
 	PrivateAuction int        `json:"private_auction,omitempty"`
@@ -234,11 +234,11 @@ type Content struct {
 	Ext                RawMessage `json:"ext,omitempty"`
 }
 type Producer struct {
-	Id     string          `json:"id,omitempty"`
-	Name   string          `json:"name,omitempty"`
-	Cat    []string        `json:"cat,omitempty"`
-	Domain string          `json:"domain,omitempty"`
-	Ext    json.RawMessage `json:"ext,omitempty"`
+	Id     string     `json:"id,omitempty"`
+	Name   string     `json:"name,omitempty"`
+	Cat    []string   `json:"cat,omitempty"`
+	Domain string     `json:"domain,omitempty"`
+	Ext    RawMessage `json:"ext,omitempty"`
 }
 
 var (
