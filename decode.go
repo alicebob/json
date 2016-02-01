@@ -506,4 +506,10 @@ func (m *RawMessage) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+// encoding.json Marshaler
+// MarshalJSON returns *m as the JSON encoding of m.
+func (m *RawMessage) MarshalJSON() ([]byte, error) {
+	return []byte(*m), nil
+}
+
 // var _ Unmarshaler = (*RawMessage)(nil)
