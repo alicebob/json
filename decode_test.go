@@ -275,7 +275,7 @@ func TestSlice(t *testing.T) {
 		{raw: `[1 3]`, err: ErrSyntax},
 		{raw: `[1,`, err: ErrSyntax},
 		{raw: `[1`, err: ErrSyntax},
-		{raw: `[1,]`, want: sl{1}}, // should be a ErrSyntax
+		{raw: `[1,]`, err: ErrSyntax},
 		{raw: `null`, want: sl{}},
 	} {
 		v := &sl{}
@@ -313,6 +313,10 @@ func TestSkip(t *testing.T) {
 		{raw: `[1,2,3]`, want: `[1,2,3]`},
 		{raw: `[1,2,3] ,`, want: `[1,2,3]`, left: ","},
 		{raw: `[  ]`, want: `[  ]`},
+		{raw: `[1 3]`, err: ErrSyntax},
+		{raw: `[1,`, err: ErrSyntax},
+		{raw: `[1`, err: ErrSyntax},
+		{raw: `[1,]`, err: ErrSyntax},
 		{raw: `{"aap" : 1}`, want: `{"aap" : 1}`},
 		{raw: `{"aap" : 1}, `, want: `{"aap" : 1}`, left: ", "},
 		{raw: `{  },`, want: `{  }`, left: ","},

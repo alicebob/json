@@ -211,28 +211,27 @@ func decStruct(s string, v reflect.Value) (string, error) {
 	return "", nil
 }
 
-// decSlice reads /\[...\]\s*/
+// decSlice reads /\[...,...,...\]\s*/
 func decSlice(s string, v reflect.Value) (string, error) {
+	// v needs to be pointer to a slice.
 	if strings.HasPrefix(s, "null") {
 		return skipWhitespace(s[4:]), nil
 	}
-	// v needs to be pointer to a slice.
 	if s[0] != '[' {
 		return s, ErrSyntax
 	}
 	s = skipWhitespace(s[1:])
+	if len(s) == 0 {
+		return s, ErrSyntax
+	}
+	if s[0] == ']' {
+		return skipWhitespace(s[1:]), nil
+	}
 	var (
 		err error
 		vp  = v.Elem()
 	)
 	for {
-		if len(s) == 0 {
-			return s, ErrSyntax
-		}
-		if s[0] == ']' {
-			v.Elem().Set(vp)
-			return skipWhitespace(s[1:]), nil
-		}
 		vp, _, _ = grow(vp, 1)
 		s, err = decValue(s, vp.Index(vp.Len()-1).Addr().Elem())
 		if err != nil {
@@ -249,6 +248,9 @@ func decSlice(s string, v reflect.Value) (string, error) {
 			return s, ErrSyntax
 		}
 		s = skipWhitespace(s[1:])
+		if len(s) == 0 {
+			return s, ErrSyntax
+		}
 	}
 	return "", nil
 }
@@ -418,17 +420,23 @@ func lenNextNull(s string) (int, error) {
 
 func lenNextArray(s string) (int, error) {
 	i := 1
+	i += space(s[i:])
+	if i == len(s) {
+		return i, ErrSyntax
+	}
+	if s[i] == ']' {
+		return i + 1, nil
+	}
 	for i < len(s) {
-		i += space(s[i:])
-		if s[i] == ']' {
-			return i + 1, nil
-		}
 		si, err := lenNext(s[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += si
 		i += space(s[i:])
+		if i == len(s) {
+			return i, ErrSyntax
+		}
 		if s[i] == ']' {
 			return i + 1, nil
 		}
@@ -436,8 +444,9 @@ func lenNextArray(s string) (int, error) {
 			return i, ErrSyntax
 		}
 		i += 1 // the ,
+		i += space(s[i:])
 	}
-	return len(s), nil
+	return len(s), ErrSyntax
 }
 
 func lenNextObject(s string) (int, error) {
