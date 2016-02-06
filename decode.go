@@ -396,16 +396,6 @@ func nextInt(s string) (int64, int, error) {
 	return n, i, nil
 }
 
-func lenNextString(s string) (int, error) {
-	for i, v := range s[1:] {
-		// TODO: escaped chars and unicode errors
-		if v == '"' {
-			return i + 2, nil
-		}
-	}
-	return len(s), ErrSyntax
-}
-
 func nextBool(s string) (bool, int, error) {
 	if strings.HasPrefix(s, "true") {
 		return true, 4, nil
