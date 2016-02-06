@@ -23,5 +23,6 @@ SOFTWARE.
 
 EXCEPTION:
 
-The files 'tags.go', 'godecode.go', and 'encode.go' are taken from the Go
-source and redistributed under that license.
+The files 'stdlib_tags.go', 'stdlib_decode.go', 'stdlib_encode.go', and
+'stdlib_slice.go' are taken from the Go source and redistributed under that
+license.
