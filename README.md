@@ -1,22 +1,22 @@
-Experimental Go JSON parser
+Alternative Go JSON parser
 
 
 # status
 
-don't use this
+Works fine for us.
 
 # features
 
 Supported types to decode into:
     
-    * int
-    * float64
-    * string
-    * bool
-    * RawMessage
-    * structs made of all of these
-    * slices made of all of these
-    * pointers to all of these
+ * int
+ * float64
+ * string
+ * bool
+ * RawMessage
+ * structs made of all of these
+ * slices made of all of these
+ * pointers to all of these
 
 Other basic types would be easy to add; I have not needed them yet.
 
