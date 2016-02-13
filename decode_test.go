@@ -258,6 +258,53 @@ func TestStruct(t *testing.T) {
 	}
 }
 
+func TestMap(t *testing.T) {
+	type testcase struct {
+		raw  string
+		left string
+		want map[string]string
+		err  error
+	}
+	for _, cas := range []testcase{
+		{raw: `{"foo":"bar"}`, want: map[string]string{"foo": "bar"}},
+		{raw: `{}`, want: map[string]string(nil)},
+		{raw: `{},`, want: map[string]string(nil), left: ","},
+		{raw: `{ },`, want: map[string]string(nil), left: ","},
+		{raw: `{ "foo" : "bar" }   ,`, want: map[string]string{"foo": "bar"}, left: ","},
+		{raw: `{ "foo" : "bar", "baz": "bak" }   ,`, want: map[string]string{"foo": "bar", "baz": "bak"}, left: ","},
+		{raw: `{ "foo" : "bar", "foo": "bar2" }   ,`, want: map[string]string{"foo": "bar2"}, left: ","},
+		{raw: `{ "foo" : 12 }   ,`, err: ErrSyntax},
+		{raw: `{"foo" "bar"}`, err: ErrSyntax},
+		{raw: `{"foo" : "bar" 12}`, err: ErrSyntax},
+		{raw: `{`, err: ErrSyntax},
+		{raw: `{"foo"`, err: ErrSyntax},
+		{raw: `{"foo" :`, err: ErrSyntax},
+		{raw: `{"foo" : "123`, err: ErrSyntax},
+		{raw: `{"foo" : "123"`, err: ErrSyntax},
+		{raw: `{"foo" : "123" "123"`, err: ErrSyntax},
+		{raw: `{"foo" "1": "123"}`, err: ErrSyntax},
+		{raw: `{foo: "123"}`, err: ErrSyntax},
+		{raw: `{1: "123"}`, err: ErrSyntax},
+		{raw: `{[]: "123"}`, err: ErrSyntax},
+		{raw: `{"foo": [1,2,3]}`, err: ErrSyntax},
+		{raw: `null`, want: map[string]string(nil)},
+	} {
+		var v map[string]string
+		left, err := decMap(cas.raw, reflect.ValueOf(&v))
+		if have, want := err, cas.err; have != want {
+			t.Fatalf("error in %s: have %v, want %v", cas.raw, have, want)
+		}
+		if cas.err == nil {
+			if have, want := left, cas.left; have != want {
+				t.Fatalf("leftover in %s: have %q, want %q", cas.raw, have, want)
+			}
+			if have, want := v, cas.want; !reflect.DeepEqual(have, want) {
+				t.Fatalf("dec in %s: have %#v (%T), want %#v (%T)", cas.raw, have, have, want, want)
+			}
+		}
+	}
+}
+
 func TestSlice(t *testing.T) {
 	type sl []int
 	type testcase struct {

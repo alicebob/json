@@ -211,6 +211,59 @@ func decStruct(s string, v reflect.Value) (string, error) {
 	return "", nil
 }
 
+// decMap reads /{...}\s*/
+func decMap(s string, v reflect.Value) (string, error) {
+	if strings.HasPrefix(s, "null") {
+		return skipWhitespace(s[4:]), nil
+	}
+	if s[0] != '{' {
+		return s, ErrSyntax
+	}
+	s = skipWhitespace(s[1:])
+	for {
+		if len(s) == 0 {
+			return s, ErrSyntax
+		}
+		if s[0] == '}' {
+			return skipWhitespace(s[1:]), nil
+		}
+
+		field, l, err := nextString(s)
+		if err != nil {
+			return s, err
+		}
+		s = skipWhitespace(s[l:])
+		if len(s) == 0 {
+			return s, ErrSyntax
+		}
+		if s[0] != ':' {
+			return s, ErrSyntax
+		}
+		s = skipWhitespace(s[1:])
+
+		value := reflect.New(v.Type().Elem().Elem())
+		s, err = decValue(s, value.Elem())
+		if err != nil {
+			return s, err
+		}
+		if v.Elem().IsNil() {
+			v.Elem().Set(reflect.MakeMap(v.Elem().Type()))
+		}
+		key := reflect.New(reflect.TypeOf(""))
+		key.Elem().SetString(field)
+		v.Elem().SetMapIndex(key.Elem(), value.Elem())
+
+		if len(s) == 0 {
+			return s, ErrSyntax
+		}
+		if s[0] == ',' {
+			s = skipWhitespace(s[1:])
+			continue
+		}
+	}
+	return "", nil
+}
+
 // decSlice reads /\[...,...,...\]\s*/
 func decSlice(s string, v reflect.Value) (string, error) {
 	// v needs to be pointer to a slice.
