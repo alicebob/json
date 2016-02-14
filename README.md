@@ -17,7 +17,7 @@ Supported types to decode into:
  * structs made of all of these
  * slices made of all of these
  * pointers to all of these
- * map[string]<all of these>
+ * map[string]{all of these}
 
 Other basic types would be easy to add; I have not needed them yet.
 
