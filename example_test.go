@@ -6,8 +6,8 @@ import (
 	"github.com/alicebob/json"
 )
 
-// Example_Unmarshal shows the basic unmarshal function.
-func Example_Unmarshal() {
+// ExampleDecode shows the basic unmarshal function.
+func ExampleDecode() {
 	var v = struct {
 		Status string   `json:"status"`
 		Code   int      `json:"code"`
@@ -21,8 +21,8 @@ func Example_Unmarshal() {
 
 }
 
-// Example_Raw shows how to use RawMessage.
-func Example_Raw() {
+// ExampleRawMessage shows how to use RawMessage.
+func ExampleRawMessage() {
 	var v = struct {
 		Status string          `json:"status"`
 		Code   int             `json:"code"`
