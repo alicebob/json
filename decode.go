@@ -162,18 +162,19 @@ func decStruct(s string, v reflect.Value) (string, error) {
 	if strings.HasPrefix(s, "null") {
 		return skipWhitespace(s[4:]), nil
 	}
-	tags := cachedTypeFields(v.Type())
 	if s[0] != '{' {
 		return s, ErrSyntax
 	}
 	s = skipWhitespace(s[1:])
+	if len(s) == 0 {
+		return s, ErrSyntax
+	}
+	if s[0] == '}' {
+		return skipWhitespace(s[1:]), nil
+	}
+
+	tags := cachedTypeFields(v.Type())
 	for {
-		if len(s) == 0 {
-			return s, ErrSyntax
-		}
-		if s[0] == '}' {
-			return skipWhitespace(s[1:]), nil
-		}
 
 		field, l, err := nextString(s)
 		if err != nil {
@@ -208,9 +209,15 @@ func decStruct(s string, v reflect.Value) (string, error) {
 		if len(s) == 0 {
 			return s, ErrSyntax
 		}
-		if s[0] == ',' {
-			s = skipWhitespace(s[1:])
-			continue
+		if s[0] == '}' {
+			return skipWhitespace(s[1:]), nil
+		}
+		if s[0] != ',' {
+			return s, ErrSyntax
+		}
+		s = skipWhitespace(s[1:])
+		if len(s) == 0 {
+			return s, ErrSyntax
 		}
 	}
 	return "", nil
@@ -228,14 +235,14 @@ func decMap(s string, v reflect.Value) (string, error) {
 		return s, ErrSyntax
 	}
 	s = skipWhitespace(s[1:])
-	for {
-		if len(s) == 0 {
-			return s, ErrSyntax
-		}
-		if s[0] == '}' {
-			return skipWhitespace(s[1:]), nil
-		}
+	if len(s) == 0 {
+		return s, ErrSyntax
+	}
+	if s[0] == '}' {
+		return skipWhitespace(s[1:]), nil
+	}
 
+	for {
 		field, l, err := nextString(s)
 		if err != nil {
 			return s, err
@@ -264,9 +271,16 @@ func decMap(s string, v reflect.Value) (string, error) {
 		if len(s) == 0 {
 			return s, ErrSyntax
 		}
-		if s[0] == ',' {
-			s = skipWhitespace(s[1:])
-			continue
+		if s[0] == '}' {
+			return skipWhitespace(s[1:]), nil
+		}
+
+		if s[0] != ',' {
+			return s, ErrSyntax
+		}
+		s = skipWhitespace(s[1:])
+		if len(s) == 0 {
+			return s, ErrSyntax
 		}
 	}
 	return "", nil
