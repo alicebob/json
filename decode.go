@@ -1,4 +1,4 @@
-// Experimental JSON unmarshaler
+// Alternative JSON unmarshaler
 package json
 
 import (
@@ -8,9 +8,6 @@ import (
 	"strings"
 	"unicode"
 )
-
-// All dec* funcions eat their value + trailing whitespace. Can't have leading
-// whitespace
 
 var (
 	ErrSyntax               = errors.New("unexpected char in json")
@@ -43,6 +40,9 @@ func Decode(s string, t interface{}) error {
 }
 
 var rawMessageType = reflect.TypeOf(RawMessage("")) // Can this be done easier?
+
+// All dec* funcions eat their value + trailing whitespace. Can't have leading
+// whitespace.
 
 func decValue(s string, v reflect.Value) (string, error) {
 	/*
@@ -159,10 +159,14 @@ func decStruct(s string, v reflect.Value) (string, error) {
 	if len(s) == 0 {
 		return s, ErrSyntax
 	}
-	if strings.HasPrefix(s, "null") {
-		return skipWhitespace(s[4:]), nil
-	}
-	if s[0] != '{' {
+	switch s[0] {
+	case '{':
+	case 'n':
+		if strings.HasPrefix(s, "null") {
+			return skipWhitespace(s[4:]), nil
+		}
+		return s, ErrSyntax
+	default:
 		return s, ErrSyntax
 	}
 	s = skipWhitespace(s[1:])
@@ -228,10 +232,14 @@ func decMap(s string, v reflect.Value) (string, error) {
 	if len(s) == 0 {
 		return s, ErrSyntax
 	}
-	if strings.HasPrefix(s, "null") {
-		return skipWhitespace(s[4:]), nil
-	}
-	if s[0] != '{' {
+	switch s[0] {
+	case '{':
+	case 'n':
+		if strings.HasPrefix(s, "null") {
+			return skipWhitespace(s[4:]), nil
+		}
+		return s, ErrSyntax
+	default:
 		return s, ErrSyntax
 	}
 	s = skipWhitespace(s[1:])
@@ -292,10 +300,14 @@ func decSlice(s string, v reflect.Value) (string, error) {
 	if len(s) == 0 {
 		return s, ErrSyntax
 	}
-	if strings.HasPrefix(s, "null") {
-		return skipWhitespace(s[4:]), nil
-	}
-	if s[0] != '[' {
+	switch s[0] {
+	case '[':
+	case 'n':
+		if strings.HasPrefix(s, "null") {
+			return skipWhitespace(s[4:]), nil
+		}
+		return s, ErrSyntax
+	default:
 		return s, ErrSyntax
 	}
 	s = skipWhitespace(s[1:])
@@ -386,10 +398,14 @@ func nextString(s string) (string, int, error) {
 	if s == "" {
 		return s, 0, ErrSyntax
 	}
-	if strings.HasPrefix(s, "null") {
-		return "", 4, nil
-	}
-	if s[0] != '"' {
+	switch s[0] {
+	case '"':
+	case 'n':
+		if strings.HasPrefix(s, "null") {
+			return "", 4, nil
+		}
+		return s, 0, ErrSyntax
+	default:
 		return s, 0, ErrSyntax
 	}
 	hasEscapes := false
