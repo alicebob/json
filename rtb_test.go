@@ -9,7 +9,7 @@ import (
 )
 
 type RTB struct {
-	Id      string       `json:"id"`
+	ID      string       `json:"id"`
 	Imp     []Impression `json:"imp,omitempty"`
 	Site    *Site        `json:"site,omitempty"`
 	App     *App         `json:"app,omitempty"`
@@ -27,7 +27,7 @@ type RTB struct {
 	Ext RawMessage `json:"ext,omitempty"`
 }
 type App struct {
-	Id            string     `json:"id,omitempty"`
+	ID            string     `json:"id,omitempty"`
 	Name          string     `json:"name,omitempty"`
 	Bundle        string     `json:"bundle,omitempty"`
 	Domain        string     `json:"domain,omitempty"`
@@ -44,7 +44,7 @@ type App struct {
 	Ext           RawMessage `json:"ext,omitempty"`
 }
 type Publisher struct {
-	Id     string     `json:"id,omitempty"`
+	ID     string     `json:"id,omitempty"`
 	Name   string     `json:"name,omitempty"`
 	Cat    []string   `json:"cat,omitempty"`
 	Domain string     `json:"domain,omitempty"`
@@ -55,8 +55,8 @@ type Device struct {
 	Geo            *Geo       `json:"geo,omitempty"`
 	Dnt            int        `json:"dnt,omitempty"`
 	LMT            int        `json:"lmt,omitempty"`
-	Ip             string     `json:"ip,omitempty"`
-	Ipv6           string     `json:"ipv6,omitempty"`
+	IP             string     `json:"ip,omitempty"`
+	IPv6           string     `json:"ipv6,omitempty"`
 	DeviceType     int        `json:"devicetype,omitempty"`
 	Make           string     `json:"make,omitempty"`
 	Model          string     `json:"model,omitempty"`
@@ -95,8 +95,8 @@ type Geo struct {
 	Ext           RawMessage `json:"ext,omitempty"`
 }
 type User struct {
-	Id         string     `json:"id,omitempty"`
-	BuyerUid   string     `json:"buyeruid,omitempty"`
+	ID         string     `json:"id,omitempty"`
+	BuyerUID   string     `json:"buyeruid,omitempty"`
 	Yob        int        `json:"yob,omitempty"`
 	Gender     string     `json:"gender,omitempty"`
 	Keywords   string     `json:"keywords,omitempty"`
@@ -106,27 +106,27 @@ type User struct {
 	Ext        RawMessage `json:"ext,omitempty"`
 }
 type Data struct {
-	Id      string     `json:"id,omitempty"`
+	ID      string     `json:"id,omitempty"`
 	Name    string     `json:"name,omitempty"`
 	Segment []Segment  `json:"segment,omitempty"`
 	Ext     RawMessage `json:"ext,omitempty"`
 }
 
 type Segment struct {
-	Id    string     `json:"id,omitempty"`
+	ID    string     `json:"id,omitempty"`
 	Name  string     `json:"name,omitempty"`
 	Value string     `json:"value,omitempty"`
 	Ext   RawMessage `json:"ext,omitempty"`
 }
 type Impression struct {
-	Id                string     `json:"id,omitempty"`
+	ID                string     `json:"id,omitempty"`
 	Banner            *Banner    `json:"banner,omitempty"`
 	Video             *Video     `json:"video,omitempty"`
 	Native            *Native    `json:"native,omitempty"`
 	DisplayManager    string     `json:"displaymanager,omitempty"`
 	DisplayManagerVer string     `json:"displaymanagerver,omitempty"`
 	Instl             int        `json:"instl,omitempty"`
-	TagId             string     `json:"tagid,omitempty"`
+	TagID             string     `json:"tagid,omitempty"`
 	BidFloor          float64    `json:"bidfloor,omitempty"`
 	BidFloorCur       string     `json:"bidfloorcur,omitempty"`
 	Secure            int        `json:"secure,omitempty"`
@@ -141,14 +141,14 @@ type Banner struct {
 	Hmax     int        `json:"hmax,omitempty"`
 	Wmin     int        `json:"wmin,omitempty"`
 	Hmin     int        `json:"hmin,omitempty"`
-	Id       string     `json:"id,omitempty"`
+	ID       string     `json:"id,omitempty"`
 	BType    []int      `json:"btype,omitempty"`
 	BAttr    []int      `json:"battr,omitempty"`
 	Pos      int        `json:"pos,omitempty"`
 	Mimes    []string   `json:"mimes,omitempty"`
 	TopFrame int        `json:"topframe,omitempty"`
 	ExpDir   []int      `json:"expdir,omitempty"`
-	Api      []int      `json:"api,omitempty"`
+	API      []int      `json:"api,omitempty"`
 	Ext      RawMessage `json:"ext,omitempty"`
 }
 type Native struct {
@@ -176,7 +176,7 @@ type Video struct {
 	Delivery       []int      `json:"delivery,omitempty"`
 	Pos            int        `json:"pos,omitempty"`
 	CompanionAd    []Banner   `json:"companionad,omitempty"`
-	Api            []int      `json:"api,omitempty"`
+	API            []int      `json:"api,omitempty"`
 	CompanionType  []int      `json:"companiontype,omitempty"`
 	Ext            RawMessage `json:"ext,omitempty"`
 }
@@ -186,7 +186,7 @@ type Pmp struct {
 	Ext            RawMessage `json:"ext,omitempty"`
 }
 type Deal struct {
-	Id          string     `json:"id,omitempty"`
+	ID          string     `json:"id,omitempty"`
 	BidFloor    float64    `json:"bidfloor,omitempty"`
 	BidFloorCur string     `json:"bidfloorcur,omitempty"`
 	At          int        `json:"at,omitempty"`
@@ -195,7 +195,7 @@ type Deal struct {
 	Ext         RawMessage `json:"ext,omitempty"`
 }
 type Site struct {
-	Id            string     `json:"id,omitempty"`
+	ID            string     `json:"id,omitempty"`
 	Name          string     `json:"name,omitempty"`
 	Domain        string     `json:"domain,omitempty"`
 	Cat           []string   `json:"cat,omitempty"`
@@ -212,7 +212,7 @@ type Site struct {
 	Ext           RawMessage `json:"ext,omitempty"`
 }
 type Content struct {
-	Id                 string     `json:"id,omitempty"`
+	ID                 string     `json:"id,omitempty"`
 	Episode            int        `json:"episode,omitempty"`
 	Title              string     `json:"title,omitempty"`
 	Series             string     `json:"series,omitempty"`
@@ -234,7 +234,7 @@ type Content struct {
 	Ext                RawMessage `json:"ext,omitempty"`
 }
 type Producer struct {
-	Id     string     `json:"id,omitempty"`
+	ID     string     `json:"id,omitempty"`
 	Name   string     `json:"name,omitempty"`
 	Cat    []string   `json:"cat,omitempty"`
 	Domain string     `json:"domain,omitempty"`

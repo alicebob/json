@@ -1,4 +1,4 @@
-// Alternative JSON unmarshaler
+// Package json is an alternative JSON unmarshaler.
 //
 //
 // Supported types to unmarshal into:
@@ -26,10 +26,15 @@ import (
 )
 
 var (
-	ErrSyntax               = errors.New("unexpected char in json")
-	ErrLeftoverBytes        = errors.New("leftover bytes")
-	ErrNotAPointer          = errors.New("value is not a pointer")
-	ErrUnsupportedType      = errors.New("unsupported type")
+	// ErrSyntax is returned by Decode when the json doesn't align with what's expected from the datatype.
+	ErrSyntax = errors.New("unexpected char in json")
+	// ErrLeftoverBytes is returned by Decode when there are multiple records.
+	ErrLeftoverBytes = errors.New("leftover bytes")
+	// ErrNotAPointer is returned by Decode if t is not assignable.
+	ErrNotAPointer = errors.New("value is not a pointer")
+	// ErrUnsupportedType is returned by Decode if it can't handle that type.
+	ErrUnsupportedType = errors.New("unsupported type")
+	// ErrRawMessageNilPointer can be returned by RawMessage.
 	ErrRawMessageNilPointer = errors.New("RawMessage: UnmarshalJSONs on nil pointer")
 )
 
@@ -39,6 +44,7 @@ type Unmarshaler interface {
 }
 */
 
+// Decode is the main unmarshal function. t needs to be assignable, and be of the supported datatypes.
 func Decode(s string, t interface{}) error {
 	rv := reflect.ValueOf(t)
 	if rv.Kind() != reflect.Ptr || rv.IsNil() {
@@ -550,7 +556,7 @@ func lenNextArray(s string) (int, error) {
 		if s[i] != ',' {
 			return i, ErrSyntax
 		}
-		i += 1 // the ,
+		i++ // the ,
 		i += space(s[i:])
 	}
 	return len(s), ErrSyntax
@@ -572,7 +578,7 @@ func lenNextObject(s string) (int, error) {
 		if s[i] != ':' {
 			return i, ErrSyntax
 		}
-		i += 1
+		i++
 		i += space(s[i:])
 		si, err := lenNext(s[i:])
 		if err != nil {
@@ -586,7 +592,7 @@ func lenNextObject(s string) (int, error) {
 		if s[i] != ',' {
 			return i, ErrSyntax
 		}
-		i += 1 // the ,
+		i++ // the ,
 	}
 	return len(s), nil
 }

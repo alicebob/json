@@ -6,8 +6,8 @@ import (
 	"github.com/alicebob/json"
 )
 
-// Example shows the basic unmarshal funcion.
-func Example() {
+// Example_Unmarshal shows the basic unmarshal function.
+func Example_Unmarshal() {
 	var v = struct {
 		Status string   `json:"status"`
 		Code   int      `json:"code"`
