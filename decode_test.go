@@ -32,6 +32,7 @@ func TestString(t *testing.T) {
 		{raw: `"foo\`, err: ErrSyntax},
 		{raw: `"\"\u26""`, err: ErrSyntax},
 		{raw: `null`, want: ""},
+		{raw: ``, err: ErrSyntax},
 	} {
 		dec := ""
 		left, err := decString(cas.raw, reflect.ValueOf(&dec).Elem())
@@ -121,6 +122,7 @@ func TestInt(t *testing.T) {
 		{raw: `123e10`, want: 123, left: `e10`},
 		{raw: `123e,`, want: 123, left: `e,`},
 		{raw: `null`, want: 0, left: ``},
+		{raw: ``, err: ErrSyntax},
 	} {
 		dec := int64(0)
 		left, err := decInt(cas.raw, reflect.ValueOf(&dec).Elem())
@@ -160,6 +162,7 @@ func TestFloat(t *testing.T) {
 		{raw: `123e10`, want: 123e10},
 		{raw: `123e,`, err: ErrSyntax},
 		{raw: `null`, want: 0.0},
+		{raw: ``, err: ErrSyntax},
 	} {
 		dec := float64(0)
 		left, err := decFloat(cas.raw, reflect.ValueOf(&dec).Elem())
@@ -192,6 +195,7 @@ func TestBool(t *testing.T) {
 		{raw: `FALSE`, err: ErrSyntax},
 		{raw: `false?!?`, want: false, left: `?!?`},
 		{raw: `null`, want: false},
+		{raw: ``, err: ErrSyntax},
 	} {
 		dec := false
 		left, err := decBool(cas.raw, reflect.ValueOf(&dec).Elem())
@@ -241,6 +245,7 @@ func TestStruct(t *testing.T) {
 		{raw: `{"foo": 123}`, err: ErrSyntax},
 		{raw: `{"foo": [1,2,3]}`, err: ErrSyntax},
 		{raw: `null`, want: str{}},
+		{raw: ``, err: ErrSyntax},
 	} {
 		v := &str{}
 		left, err := decStruct(cas.raw, reflect.ValueOf(v).Elem())
@@ -288,6 +293,7 @@ func TestMap(t *testing.T) {
 		{raw: `{[]: "123"}`, err: ErrSyntax},
 		{raw: `{"foo": [1,2,3]}`, err: ErrSyntax},
 		{raw: `null`, want: map[string]string(nil)},
+		{raw: ``, err: ErrSyntax},
 	} {
 		var v map[string]string
 		left, err := decMap(cas.raw, reflect.ValueOf(&v))
@@ -324,6 +330,7 @@ func TestSlice(t *testing.T) {
 		{raw: `[1`, err: ErrSyntax},
 		{raw: `[1,]`, err: ErrSyntax},
 		{raw: `null`, want: sl{}},
+		{raw: ``, err: ErrSyntax},
 	} {
 		v := &sl{}
 		left, err := decSlice(cas.raw, reflect.ValueOf(v))
@@ -371,6 +378,7 @@ func TestSkip(t *testing.T) {
 		{raw: `{"aap" : true}`, want: `{"aap" : true}`},
 		{raw: `{"aap" : false }`, want: `{"aap" : false }`},
 		{raw: `null`, want: `null`},
+		{raw: ``, err: ErrSyntax},
 	} {
 		v, left, err := decSkip(cas.raw)
 		if have, want := err, cas.err; have != want {
@@ -512,6 +520,7 @@ func TestDecode(t *testing.T) {
 
 		// misc
 		{raw: ` "foo"`, ptr: new(string), want: "foo"},
+		{raw: ``, ptr: new(Str), err: ErrSyntax},
 
 		// everything
 		{

@@ -156,6 +156,9 @@ func decBool(s string, v reflect.Value) (string, error) {
 
 // decStruct reads /{...}\s*/
 func decStruct(s string, v reflect.Value) (string, error) {
+	if len(s) == 0 {
+		return s, ErrSyntax
+	}
 	if strings.HasPrefix(s, "null") {
 		return skipWhitespace(s[4:]), nil
 	}
@@ -215,6 +218,9 @@ func decStruct(s string, v reflect.Value) (string, error) {
 
 // decMap reads /{...}\s*/
 func decMap(s string, v reflect.Value) (string, error) {
+	if len(s) == 0 {
+		return s, ErrSyntax
+	}
 	if strings.HasPrefix(s, "null") {
 		return skipWhitespace(s[4:]), nil
 	}
@@ -269,6 +275,9 @@ func decMap(s string, v reflect.Value) (string, error) {
 // decSlice reads /\[...,...,...\]\s*/
 func decSlice(s string, v reflect.Value) (string, error) {
 	// v needs to be pointer to a slice.
+	if len(s) == 0 {
+		return s, ErrSyntax
+	}
 	if strings.HasPrefix(s, "null") {
 		return skipWhitespace(s[4:]), nil
 	}
@@ -334,7 +343,7 @@ func decSkip(s string) (string, string, error) {
 
 func lenNext(s string) (int, error) {
 	if len(s) == 0 {
-		return 0, nil
+		return 0, ErrSyntax
 	}
 	v := s[0]
 	switch {
@@ -361,7 +370,7 @@ func lenNext(s string) (int, error) {
 // nextString returns the string starting at s, and the number of bytes read.
 func nextString(s string) (string, int, error) {
 	if s == "" {
-		return s, 0, nil // Sure?
+		return s, 0, ErrSyntax
 	}
 	if strings.HasPrefix(s, "null") {
 		return "", 4, nil
