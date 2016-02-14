@@ -417,18 +417,20 @@ func TestRawMessage(t *testing.T) {
 
 func TestDecode(t *testing.T) {
 	type Str struct {
-		Foo string     `json:"foo"`
-		Bar int        `json:"bar"`
-		Baz string     `json:"baz"`
-		Fl  float64    `json:"fl"`
-		Bl  bool       `json:"bl"`
-		Raw RawMessage `json:"raw"`
+		Foo string            `json:"foo"`
+		Bar int               `json:"bar"`
+		Baz string            `json:"baz"`
+		Fl  float64           `json:"fl"`
+		Bl  bool              `json:"bl"`
+		Map map[string]string `json:"map"`
+		Raw RawMessage        `json:"raw"`
 	}
 	type Strsl []Str
 	type Pointers struct {
-		Structp *Str    `json:"structp"`
-		Stringp *string `json:"stringp"`
-		Intp    *int    `json:"intp"`
+		Structp *Str               `json:"structp"`
+		Stringp *string            `json:"stringp"`
+		Intp    *int               `json:"intp"`
+		Mapp    *map[string]string `json:"mapp"`
 	}
 
 	type testcase struct {
@@ -457,19 +459,12 @@ func TestDecode(t *testing.T) {
 
 		// structs
 		{raw: `{}`, ptr: new(Str), want: Str{}},
-		{
-			raw: `{"foo":"foovalue","bar":123,"baz":"bazvalue","fl":1.2,"bl":true,"raw":[1,2,3]}`,
-			ptr: new(Str),
-			want: Str{
-				Foo: "foovalue",
-				Bar: 123,
-				Baz: "bazvalue",
-				Fl:  1.2,
-				Bl:  true,
-				Raw: `[1,2,3]`,
-			},
-		},
 		{raw: `{"bar":}`, ptr: new(Str), err: ErrSyntax},
+
+		// maps
+		{raw: `{"aap": "noot"}`, ptr: new(map[string]string), want: map[string]string{"aap": "noot"}},
+		{raw: `{"aap": 24}`, ptr: new(map[string]int), want: map[string]int{"aap": 24}},
+		{raw: `{"aap": [1,2,3]}`, ptr: new(map[string][]int), want: map[string][]int{"aap": []int{1, 2, 3}}},
 
 		// slices
 		// {raw: `[]`, ptr: new(Strsl), want: Strsl(nil)}, // encoding.json decodes this as a 0 length slice, not a nil
@@ -492,7 +487,7 @@ func TestDecode(t *testing.T) {
 
 		// pointers
 		{
-			raw: `{"structp":{"foo":"foovalue","bar":123,"baz":"bazvalue"},"intp":999,"stringp":"hello world"}`,
+			raw: `{"structp":{"foo":"foovalue","bar":123,"baz":"bazvalue"},"intp":999,"stringp":"hello world","mapp":{"hello":"map"}}`,
 			ptr: new(Pointers),
 			want: Pointers{
 				Structp: &Str{
@@ -502,6 +497,7 @@ func TestDecode(t *testing.T) {
 				},
 				Intp:    &nineninenine,
 				Stringp: &helloworld,
+				Mapp:    &map[string]string{"hello": "map"},
 			},
 		},
 
@@ -516,6 +512,21 @@ func TestDecode(t *testing.T) {
 
 		// misc
 		{raw: ` "foo"`, ptr: new(string), want: "foo"},
+
+		// everything
+		{
+			raw: `{"foo":"foovalue","bar":123,"baz":"bazvalue","fl":1.2,"bl":true,"map":{"key":"value"},"raw":[1,2,3]}`,
+			ptr: new(Str),
+			want: Str{
+				Foo: "foovalue",
+				Bar: 123,
+				Baz: "bazvalue",
+				Fl:  1.2,
+				Bl:  true,
+				Map: map[string]string{"key": "value"},
+				Raw: `[1,2,3]`,
+			},
+		},
 	} {
 		v := reflect.New(reflect.TypeOf(cas.ptr).Elem())
 		err := Decode(cas.raw, v.Interface())

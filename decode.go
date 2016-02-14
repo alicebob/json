@@ -66,6 +66,8 @@ func decValue(s string, v reflect.Value) (string, error) {
 		return decBool(s, v)
 	case reflect.Struct:
 		return decStruct(s, v)
+	case reflect.Map:
+		return decMap(s, v.Addr())
 	case reflect.Slice:
 		return decSlice(s, v.Addr())
 	case reflect.Ptr:

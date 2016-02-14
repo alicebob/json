@@ -11,14 +11,12 @@ import (
 type esBulk struct {
 	Took   int  `json:"took"`
 	Errors bool `json:"errors"`
-	Items  []struct {
-		Update struct { // TODO: should be a map
-			Index   string `json:"_index"`
-			Type    string `json:"_type"`
-			ID      string `json:"_id"`
-			Version int    `json:"_version"`
-			Status  int    `json:"status"`
-		} `json:"update"`
+	Items  []map[string]struct {
+		Index   string `json:"_index"`
+		Type    string `json:"_type"`
+		ID      string `json:"_id"`
+		Version int    `json:"_version"`
+		Status  int    `json:"status"`
 	} `json:"items"`
 }
 
