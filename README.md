@@ -1,13 +1,8 @@
 Alternative Go JSON parser
 
-
-# status
-
-Works fine for us.
-
 # features
 
-Supported types to decode into:
+Supported types to unmarshal into:
     
  * int
  * float64
@@ -19,7 +14,7 @@ Supported types to decode into:
  * pointers to all of these
  * map[string]{all of these}
 
-Other basic types would be easy to add; I have not needed them yet.
+Other basic types would be easy to add; I have not needed them yet. Note that the empty interface is not supported.
 
 # vs. encoding/json
 
@@ -37,4 +32,7 @@ BenchmarkRTB-4       	   50000	     29093 ns/op	    2536 B/op	      39 allocs/op
 BenchmarkRTBThem-4   	   20000	     63858 ns/op	    3888 B/op	      87 allocs/op
 </pre>
 
+# status
+
+Works fine for us.
 

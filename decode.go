@@ -1,4 +1,20 @@
 // Alternative JSON unmarshaler
+//
+//
+// Supported types to unmarshal into:
+//
+//  * int
+//  * float64
+//  * string
+//  * bool
+//  * RawMessage
+//  * structs made of all of these
+//  * slices made of all of these
+//  * pointers to all of these
+//  * map[string]{all of these}
+//
+// Note that the empty interface is not supported; all types must be know.
+//
 package json
 
 import (
@@ -224,7 +240,6 @@ func decStruct(s string, v reflect.Value) (string, error) {
 			return s, ErrSyntax
 		}
 	}
-	return "", nil
 }
 
 // decMap reads /{...}\s*/
@@ -291,7 +306,6 @@ func decMap(s string, v reflect.Value) (string, error) {
 			return s, ErrSyntax
 		}
 	}
-	return "", nil
 }
 
 // decSlice reads /\[...,...,...\]\s*/
@@ -342,7 +356,6 @@ func decSlice(s string, v reflect.Value) (string, error) {
 			return s, ErrSyntax
 		}
 	}
-	return "", nil
 }
 
 /*
@@ -578,6 +591,8 @@ func lenNextObject(s string) (int, error) {
 	return len(s), nil
 }
 
+// RawMessage is a raw encoded JSON object.
+// It can be used to delay JSON decoding or precompute a JSON encoding.
 type RawMessage string
 
 /*
@@ -590,7 +605,7 @@ func (m *RawMessage) UnmarshalJSONs(s string) error {
 }
 */
 
-// encoding.json Unmarshaler
+// UnmarshalJSON implements encoding.json Unmarshaler interface
 func (m *RawMessage) UnmarshalJSON(b []byte) error {
 	if m == nil {
 		return ErrRawMessageNilPointer
@@ -599,8 +614,7 @@ func (m *RawMessage) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// encoding.json Marshaler
-// MarshalJSON returns *m as the JSON encoding of m.
+// MarshalJSON implements encoding.json Marshaler interface
 func (m *RawMessage) MarshalJSON() ([]byte, error) {
 	return []byte(*m), nil
 }

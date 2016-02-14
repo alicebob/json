@@ -95,7 +95,7 @@ func TestNextNumber(t *testing.T) {
 				t.Fatalf("%q left: have %d, want %d", cas.raw, have, want)
 			}
 			if have, want := n, cas.want; have != want {
-				t.Fatalf("%q want: have %d, want %d", cas.raw, have, want)
+				t.Fatalf("%q want: have %f, want %f", cas.raw, have, want)
 			}
 		}
 	}
@@ -207,7 +207,7 @@ func TestBool(t *testing.T) {
 				t.Fatalf("%q left: have %q, want %q", cas.raw, have, want)
 			}
 			if have, want := dec, cas.want; have != want {
-				t.Fatalf("%q want: have %b, want %b", cas.raw, have, want)
+				t.Fatalf("%q want: have %t, want %t", cas.raw, have, want)
 			}
 		}
 	}

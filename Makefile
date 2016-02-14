@@ -7,6 +7,7 @@ build:
 
 test:
 	go test
+	go vet
 
 bench:
 	go test -bench=. -benchmem
