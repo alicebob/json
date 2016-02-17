@@ -273,7 +273,6 @@ func decMap(s string, v reflect.Value) (string, error) {
 		return skipWhitespace(s[1:]), nil
 	}
 
-	value := reflect.New(v.Type().Elem().Elem())
 	for {
 		field, l, err := nextString(s)
 		if err != nil {
@@ -288,6 +287,7 @@ func decMap(s string, v reflect.Value) (string, error) {
 		}
 		s = skipWhitespace(s[1:])
 
+		value := reflect.New(v.Type().Elem().Elem())
 		s, err = decValue(s, value.Elem())
 		if err != nil {
 			return s, err

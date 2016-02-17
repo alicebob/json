@@ -475,6 +475,7 @@ func TestDecode(t *testing.T) {
 		{raw: `{"aap": "noot"}`, ptr: new(map[string]string), want: map[string]string{"aap": "noot"}},
 		{raw: `{"aap": 24}`, ptr: new(map[string]int), want: map[string]int{"aap": 24}},
 		{raw: `{"aap": [1,2,3]}`, ptr: new(map[string][]int), want: map[string][]int{"aap": []int{1, 2, 3}}},
+		{raw: `{"foo":[1,2,3],"bar":[4,5,6]}`, ptr: new(map[string][]int), want: map[string][]int{"foo": []int{1, 2, 3}, "bar": []int{4, 5, 6}}},
 
 		// slices
 		// {raw: `[]`, ptr: new(Strsl), want: Strsl(nil)}, // encoding.json decodes this as a 0 length slice, not a nil
