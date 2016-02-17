@@ -248,6 +248,8 @@ func decStruct(s string, v reflect.Value) (string, error) {
 	}
 }
 
+var key = reflect.New(reflect.TypeOf(""))
+
 // decMap reads /{...}\s*/
 func decMap(s string, v reflect.Value) (string, error) {
 	if len(s) == 0 {
@@ -271,6 +273,7 @@ func decMap(s string, v reflect.Value) (string, error) {
 		return skipWhitespace(s[1:]), nil
 	}
 
+	value := reflect.New(v.Type().Elem().Elem())
 	for {
 		field, l, err := nextString(s)
 		if err != nil {
@@ -285,7 +288,6 @@ func decMap(s string, v reflect.Value) (string, error) {
 		}
 		s = skipWhitespace(s[1:])
 
-		value := reflect.New(v.Type().Elem().Elem())
 		s, err = decValue(s, value.Elem())
 		if err != nil {
 			return s, err
@@ -293,7 +295,6 @@ func decMap(s string, v reflect.Value) (string, error) {
 		if v.Elem().IsNil() {
 			v.Elem().Set(reflect.MakeMap(v.Elem().Type()))
 		}
-		key := reflect.New(reflect.TypeOf(""))
 		key.Elem().SetString(field)
 		v.Elem().SetMapIndex(key.Elem(), value.Elem())
 
