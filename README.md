@@ -42,3 +42,6 @@ BenchmarkESbulkThem-4	    2000	   1055068 ns/op	  200884 B/op	    2283 allocs/op
 
 Works fine for us.
 
+[![Build Status](https://travis-ci.org/alicebob/json.svg?branch=master)](https://travis-ci.org/alicebob/json)
+
+[![GoDoc](https://godoc.org/github.com/alicebob/json?status.svg)](https://godoc.org/github.com/alicebob/json)
