@@ -32,6 +32,12 @@ BenchmarkRTB-4       	   50000	     29093 ns/op	    2536 B/op	      39 allocs/op
 BenchmarkRTBThem-4   	   20000	     63858 ns/op	    3888 B/op	      87 allocs/op
 </pre>
 
+Similar for parsing large ElasticSearch bulk results:
+<pre>
+BenchmarkESbulk-4    	    3000	    473237 ns/op	  177979 B/op	     830 allocs/op
+BenchmarkESbulkThem-4	    2000	   1055068 ns/op	  200884 B/op	    2283 allocs/op
+</pre>
+
 # status
 
 Works fine for us.
