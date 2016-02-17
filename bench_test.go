@@ -7,7 +7,7 @@ import (
 
 var stringV = `"foo"`
 
-func BenchmarkStringUs(b *testing.B) {
+func BenchmarkString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var (
 			tv string
@@ -81,6 +81,27 @@ func BenchmarkStructThem(b *testing.B) {
 		var (
 			tv str
 		)
+		if err := json.Unmarshal(v, &tv); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var mapV = `{"foo":"foov","bar":"barv","n":"nv"}`
+
+func BenchmarkMap(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var tv map[string]string
+		if err := Decode(mapV, &tv); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkMapThem(b *testing.B) {
+	v := []byte(mapV)
+	for i := 0; i < b.N; i++ {
+		var tv map[string]string
 		if err := json.Unmarshal(v, &tv); err != nil {
 			b.Fatal(err)
 		}
